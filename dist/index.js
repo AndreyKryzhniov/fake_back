@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const app = express_1.default();
 app.use(cors_1.default());
 // parse application/json
@@ -32,7 +33,14 @@ someRouter.get('/y', (req, res) => {
     res.status(200).json({ z: req.query, count: fakeState.counter });
 });
 app.use('/x', someRouter);
-app.listen(process.env.PORT, () => {
-    console.log("Neko-back listening on port: " + process.env.PORT);
+mongoose_1.default.connect('mongodb+srv://andrey_kryzhniov:mpz70mpz@cluster0-fyuug.mongodb.net/fake_data?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+    console.log('Connect');
+    app.listen(process.env.PORT, () => {
+        console.log("Neko-back listening on port: " + process.env.PORT);
+    });
+})
+    .catch((err) => {
+    console.log('error:' + err);
 });
 //# sourceMappingURL=index.js.map
